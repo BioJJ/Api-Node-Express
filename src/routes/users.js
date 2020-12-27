@@ -28,7 +28,24 @@ router.get('/', (req, res) => {
 
     const content = readFile();
 
+    
+
     res.send(content);
+
+});
+//buscar por id
+router.get('/:id', (req, res) => {
+    const {id} = req.params;
+
+    const content = readFile();
+    
+    const findExist = content.findIndex((user) => user.id === id);
+
+    if(!findExist)
+        return res.status(400).send({error: true, msg: 'id is wrong -  invalid login'});
+
+    const usuario_logado= content[findExist];    
+    res.send(usuario_logado);
 
 });
 
@@ -48,7 +65,7 @@ router.post('/', function (req, res) {
     if (findExist) {
         return res.status(409).send({error: true, msg: 'username already exist'})
     }
-    //cruar um id aleatorio
+    //criar um id aleatorio
     const id = Math.random().toString(32).substr(2,6);
     AtualFile.push({ id, username, password, fullname,age })
 
